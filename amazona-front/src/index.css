@@ -34,3 +34,12 @@ main {
 .product-info {
   padding: 1rem;
 }
+
+.rating span {
+  color: #ffc000;
+}
+
+.btn-primary {
+  background-color: #f0c040;
+  color: #000;
+}
