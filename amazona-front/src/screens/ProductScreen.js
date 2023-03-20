@@ -4,7 +4,10 @@ import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import Rating from '../components/Rating';
+import LoadingBox from '../components/ui/LoadingBox';
+import MessageBox from '../components/ui/MessageBox';
 import { FETCH_ACTIONS } from '../utils/reducer-actions';
+import { getError } from '../utils/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -34,15 +37,15 @@ export default function ProductScreen() {
         const { data } = await axios.get(`/api/products/slug/${slug}`);
         dispatch({ type: FETCH_ACTIONS.FETCH_SUCCESS, payload: data });
       } catch (error) {
-        dispatch({ type: FETCH_ACTIONS.FETCH_FAIL, payload: error.message });
+        dispatch({ type: FETCH_ACTIONS.FETCH_FAIL, payload: getError(error) });
       }
     };
     fetchProducts();
   }, [slug]);
   return loading ? (
-    <div>...Loading</div>
+    <LoadingBox />
   ) : error ? (
-    <div>{error}</div>
+    <MessageBox variant="danger">{error}</MessageBox>
   ) : (
     <div>
       <Row>
