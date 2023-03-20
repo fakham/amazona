@@ -3,20 +3,16 @@ import axios from 'axios';
 import logger from 'use-reducer-logger';
 import { Col, Row } from 'react-bootstrap';
 import Product from '../components/Product';
-
-const ACTIONS = {
-  FETCH_REQUEST: 'fetch-request',
-  FETCH_SUCCESS: 'fetch-success',
-  FETCH_FAIL: 'fetch-fail',
-};
+import { FETCH_ACTIONS } from '../utils/reducer-actions';
+import { Helmet } from 'react-helmet-async';
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case ACTIONS.FETCH_REQUEST:
+    case FETCH_ACTIONS.FETCH_REQUEST:
       return { ...state, loading: true };
-    case ACTIONS.FETCH_SUCCESS:
+    case FETCH_ACTIONS.FETCH_SUCCESS:
       return { ...state, loading: false, products: action.payload };
-    case ACTIONS.FETCH_FAIL:
+    case FETCH_ACTIONS.FETCH_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
@@ -31,18 +27,21 @@ export default function HomeScreen() {
   });
   useEffect(() => {
     const fetchProducts = async () => {
-      dispatch({ type: ACTIONS.FETCH_REQUEST });
+      dispatch({ type: FETCH_ACTIONS.FETCH_REQUEST });
       try {
         const { data } = await axios.get('/api/products');
-        dispatch({ type: ACTIONS.FETCH_SUCCESS, payload: data });
+        dispatch({ type: FETCH_ACTIONS.FETCH_SUCCESS, payload: data });
       } catch (error) {
-        dispatch({ type: ACTIONS.FETCH_FAIL, payload: error.message });
+        dispatch({ type: FETCH_ACTIONS.FETCH_FAIL, payload: error.message });
       }
     };
     fetchProducts();
   }, []);
   return (
     <div>
+      <Helmet>
+        <title>Amazona</title>
+      </Helmet>
       <h1>Featured Products</h1>
       <div className="products">
         {loading ? (

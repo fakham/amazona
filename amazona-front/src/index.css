@@ -43,3 +43,7 @@ main {
   background-color: #f0c040;
   color: #000;
 }
+
+.image-large {
+  max-width: 100%;
+}
