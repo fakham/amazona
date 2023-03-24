@@ -1,12 +1,13 @@
 import axios from 'axios';
-import React, { useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import Rating from '../components/Rating';
 import LoadingBox from '../components/ui/LoadingBox';
 import MessageBox from '../components/ui/MessageBox';
-import { FETCH_ACTIONS } from '../utils/reducer-actions';
+import { CART_ACTIONS, FETCH_ACTIONS } from '../utils/reducer-actions';
+import { Store } from '../utils/Store';
 import { getError } from '../utils/utils';
 
 const reducer = (state, action) => {
@@ -30,6 +31,16 @@ export default function ProductScreen() {
     loading: true,
     error: '',
   });
+  const { dispatch: ctxDispatch } = useContext(Store);
+  const addToCartHandler = () => {
+    ctxDispatch({
+      type: CART_ACTIONS.CART_ADD_ITEM,
+      payload: {
+        ...product,
+        quantity: 1,
+      },
+    });
+  };
   useEffect(() => {
     const fetchProducts = async () => {
       dispatch({ type: FETCH_ACTIONS.FETCH_REQUEST });
@@ -94,7 +105,9 @@ export default function ProductScreen() {
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
-                      <Button variant="primary">Add to Cart</Button>
+                      <Button variant="primary" onClick={addToCartHandler}>
+                        Add to Cart
+                      </Button>
                     </div>
                   </ListGroup.Item>
                 )}
