@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react';
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Rating from '../components/Rating';
 import LoadingBox from '../components/ui/LoadingBox';
 import MessageBox from '../components/ui/MessageBox';
@@ -25,6 +25,7 @@ const reducer = (state, action) => {
 
 export default function ProductScreen() {
   const params = useParams();
+  const navigate = useNavigate();
   const { slug } = params;
   const [{ product, loading, error }, dispatch] = useReducer(reducer, {
     product: {},
@@ -48,6 +49,7 @@ export default function ProductScreen() {
         quantity,
       },
     });
+    navigate('/cart');
   };
   useEffect(() => {
     const fetchProducts = async () => {
