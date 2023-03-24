@@ -6,4 +6,5 @@ export const FETCH_ACTIONS = {
 
 export const CART_ACTIONS = {
   CART_ADD_ITEM: 'cart-add-item',
+  CART_REMOVE_ITEM: 'cart-remove-item',
 };
