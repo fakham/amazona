@@ -7,6 +7,7 @@ export const FETCH_ACTIONS = {
 export const CART_ACTIONS = {
   CART_ADD_ITEM: 'cart-add-item',
   CART_REMOVE_ITEM: 'cart-remove-item',
+  CART_SAVE_SHIPPING_ADDRESS: 'cart-save-shipping-address',
 };
 
 export const USER_ACTIONS = {
