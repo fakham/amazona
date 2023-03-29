@@ -1,9 +1,12 @@
 import React, { createContext, useReducer } from 'react';
-import { CART_ACTIONS } from './reducer-actions';
+import { CART_ACTIONS, USER_ACTIONS } from './reducer-actions';
 
 export const Store = createContext();
 
 const initialState = {
+  userInfo: localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null,
   cart: {
     cartItems: localStorage.getItem('cartItems')
       ? JSON.parse(localStorage.getItem('cartItems'))
@@ -39,6 +42,16 @@ const reducer = (state, action) => {
             (item) => item._id !== action.payload._id
           ),
         },
+      };
+    case USER_ACTIONS.USER_SIGNIN:
+      return {
+        ...state,
+        userInfo: action.payload,
+      };
+    case USER_ACTIONS.USER_SIGNOUT:
+      return {
+        ...state,
+        userInfo: null,
       };
     default:
       return state;

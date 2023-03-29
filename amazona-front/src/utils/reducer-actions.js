@@ -8,3 +8,8 @@ export const CART_ACTIONS = {
   CART_ADD_ITEM: 'cart-add-item',
   CART_REMOVE_ITEM: 'cart-remove-item',
 };
+
+export const USER_ACTIONS = {
+  USER_SIGNIN: 'user-signin',
+  USER_SIGNOUT: 'user-signout',
+};
