@@ -17,6 +17,7 @@ import { USER_ACTIONS } from './utils/reducer-actions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ShippingAddressScreen from './screens/ShippingAddressScreen';
+import SignUpScreen from './screens/SignUpScreen';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -80,6 +81,7 @@ function App() {
               <Route path="/product/:slug" element={<ProductScreen />} />
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/signin" element={<SignInScreen />} />
+              <Route path="/signup" element={<SignUpScreen />} />
               <Route path="/shipping" element={<ShippingAddressScreen />} />
               <Route path="/" element={<HomeScreen />} />
             </Routes>

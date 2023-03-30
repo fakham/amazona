@@ -8,7 +8,7 @@ import { USER_ACTIONS } from '../utils/reducer-actions';
 import { toast } from 'react-toastify';
 import { getError } from '../utils/utils';
 
-export default function SignInScreen() {
+export default function SignUpScreen() {
   const { search } = useLocation();
   const navigate = useNavigate();
   const redirectInUrl = new URLSearchParams(search).get('redirect');
@@ -17,8 +17,10 @@ export default function SignInScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   useEffect(() => {
     if (userInfo) {
@@ -28,8 +30,13 @@ export default function SignInScreen() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
     try {
-      const { data } = await axios.post('/api/users/signin', {
+      const { data } = await axios.post('/api/users/signup', {
+        name,
         email,
         password,
       });
@@ -45,10 +52,14 @@ export default function SignInScreen() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Sign In</title>
+        <title>Sign Up</title>
       </Helmet>
-      <h1 className="my-3">Sign In</h1>
+      <h1 className="my-3">Sign Up</h1>
       <Form onSubmit={submitHandler}>
+        <Form.Group controlId="name" className="mb-3">
+          <Form.Label>Name</Form.Label>
+          <Form.Control type="name" onChange={(e) => setName(e.target.value)} />
+        </Form.Group>
         <Form.Group controlId="email" className="mb-3">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -63,12 +74,19 @@ export default function SignInScreen() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
+        <Form.Group controlId="confirmPassword" className="mb-3">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type="password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </Form.Group>
         <div className="mb-3">
-          <Button type="submit">Sign In</Button>
+          <Button type="submit">Sign Up</Button>
         </div>
         <div>
-          New customer?{' '}
-          <Link to={`/signup?redirect=${redirect}`}>Create new account</Link>
+          Already have an account?{' '}
+          <Link to={`/signin?redirect=${redirect}`}>Sign In</Link>
         </div>
       </Form>
     </Container>
