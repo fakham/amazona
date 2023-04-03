@@ -49,6 +49,9 @@ const reducer = (state, action) => {
           ),
         },
       };
+    case CART_ACTIONS.CART_CLEAR:
+      localStorage.removeItem('cartItems');
+      return { ...state, cart: { ...state.cart, cartItems: [] } };
     case CART_ACTIONS.CART_SAVE_SHIPPING_ADDRESS:
       return {
         ...state,

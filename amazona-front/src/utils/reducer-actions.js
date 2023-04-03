@@ -9,6 +9,7 @@ export const CART_ACTIONS = {
   CART_REMOVE_ITEM: 'cart-remove-item',
   CART_SAVE_SHIPPING_ADDRESS: 'cart-save-shipping-address',
   CART_SAVE_PAYMENT_METHOD: 'cart-save-payment-method',
+  CART_CLEAR: 'cart-clear',
 };
 
 export const USER_ACTIONS = {

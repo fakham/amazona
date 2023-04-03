@@ -1,14 +1,35 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/ui/CheckoutSteps.js';
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Store } from '../utils/Store.js';
+import { CART_ACTIONS, FETCH_ACTIONS } from '../utils/reducer-actions.js';
+import { toast } from 'react-toastify';
+import { getError } from '../utils/utils.js';
+import axios from 'axios';
+import LoadingBox from '../components/ui/LoadingBox.js';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case FETCH_ACTIONS.FETCH_REQUEST:
+      return { ...state, loading: true };
+    case FETCH_ACTIONS.FETCH_SUCCESS:
+      return { ...state, loading: false };
+    case FETCH_ACTIONS.FETCH_FAIL:
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
 
 export default function PlaceOrderScreen() {
-  const { navigate } = useNavigate();
-  const { state } = useContext(Store);
-  const { cart } = state;
+  const navigate = useNavigate();
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, userInfo } = state;
+  const [{ loading }, dispatch] = useReducer(reducer, {
+    loading: false,
+  });
 
   useEffect(() => {
     if (!cart.paymentMethod) {
@@ -24,7 +45,21 @@ export default function PlaceOrderScreen() {
   cart.taxPrice = round2(0.15 * cart.itemsPrice);
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
-  const placeOrderHandler = async () => {};
+  const placeOrderHandler = async () => {
+    try {
+      dispatch({ type: FETCH_ACTIONS.FETCH_REQUEST });
+      const { data } = await axios.post('/api/orders', cart, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+
+      dispatch({ type: FETCH_ACTIONS.FETCH_SUCCESS });
+      ctxDispatch({ type: CART_ACTIONS.CART_CLEAR });
+      navigate(`/order/${data.order._id}`);
+    } catch (error) {
+      dispatch({ type: FETCH_ACTIONS.FETCH_FAIL });
+      toast.error(getError(error));
+    }
+  };
 
   return (
     <div>
@@ -130,6 +165,7 @@ export default function PlaceOrderScreen() {
                     Place Order{' '}
                   </Button>
                 </div>
+                {loading && <LoadingBox />}
               </ListGroup.Item>
             </Card.Body>
           </Card>
