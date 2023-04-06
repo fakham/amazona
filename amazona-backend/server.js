@@ -5,6 +5,7 @@ import seedRouter from './routes/seedRouter.js';
 import productRouter from './routes/productRouter.js';
 import userRouter from './routes/userRouter.js';
 import orderRouter from './routes/orderRouter.js';
+import { isAuth } from './middlewares/auth.js';
 
 dotenv.config();
 
@@ -21,7 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/api/keys/paypal', (req, res) => {
+app.get('/api/keys/paypal', isAuth, (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
 });
 

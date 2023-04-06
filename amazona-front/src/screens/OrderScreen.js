@@ -103,7 +103,7 @@ export default function OrderScreen() {
 
   useEffect(() => {
     if (!userInfo) {
-      navigate('/login');
+      navigate('/signin');
     }
     const fetchOrder = async () => {
       try {
