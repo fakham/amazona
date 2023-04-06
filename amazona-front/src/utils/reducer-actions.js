@@ -16,3 +16,10 @@ export const USER_ACTIONS = {
   USER_SIGNIN: 'user-signin',
   USER_SIGNOUT: 'user-signout',
 };
+
+export const ORDER_ACTIONS = {
+  PAY_REQUEST: 'pay-request',
+  PAY_SUCCESS: 'pay-success',
+  PAY_FAIL: 'pay-fail',
+  PAY_RESET: 'pay-reset',
+};
